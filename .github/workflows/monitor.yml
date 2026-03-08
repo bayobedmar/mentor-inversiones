@@ -2,8 +2,8 @@ name: Mentor Inversiones Monitor
 
 on:
   schedule:
-    - cron: '0 8,12,16,19 * * 1-5'  # 8h, 12h, 16h y 19h de Lunes a Viernes
-  workflow_dispatch:  # permite ejecutarlo manualmente también
+    - cron: '0 8,12,16,19 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   analizar:
@@ -16,4 +16,8 @@ jobs:
       - name: Instalar dependencias
         run: pip install yfinance pandas numpy
       - name: Ejecutar monitor
+        env:
+          EMAIL_ORIGEN: ${{ secrets.EMAIL_ORIGEN }}
+          EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: python mentor_alertas.py
