@@ -27,9 +27,10 @@ from datetime import datetime
 # CONFIGURACIÓN — EDITA ESTOS DATOS
 # ══════════════════════════════════════════════════════════════
 
-EMAIL_ORIGEN  = "tu_email@gmail.com"       # Tu Gmail desde el que se envía
-EMAIL_DESTINO = "tu_email@gmail.com"       # Dónde quieres recibir los avisos
-EMAIL_PASSWORD = "xxxx xxxx xxxx xxxx"     # Contraseña de aplicación Gmail (ver guía abajo)
+import os
+EMAIL_ORIGEN   = os.environ.get("EMAIL_ORIGEN",   "")
+EMAIL_DESTINO  = os.environ.get("EMAIL_DESTINO",  "")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 
 # ¿Cada cuántos minutos revisa el mercado?
 INTERVALO_MINUTOS = 60  # Recomendado: 60 (cada hora en días de mercado)
