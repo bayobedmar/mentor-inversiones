@@ -27,10 +27,9 @@ from datetime import datetime
 # CONFIGURACIÓN — EDITA ESTOS DATOS
 # ══════════════════════════════════════════════════════════════
 
-import os
-EMAIL_ORIGEN   = os.environ.get("EMAIL_ORIGEN",   "")
-EMAIL_DESTINO  = os.environ.get("EMAIL_DESTINO",  "")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
+EMAIL_ORIGEN  = "tu_email@gmail.com"       # Tu Gmail desde el que se envía
+EMAIL_DESTINO = "tu_email@gmail.com"       # Dónde quieres recibir los avisos
+EMAIL_PASSWORD = "xxxx xxxx xxxx xxxx"     # Contraseña de aplicación Gmail (ver guía abajo)
 
 # ¿Cada cuántos minutos revisa el mercado?
 INTERVALO_MINUTOS = 60  # Recomendado: 60 (cada hora en días de mercado)
@@ -78,7 +77,7 @@ def calcular_atr(df, periodo=14):
 
 def analizar_empresa(ticker, nombre):
     try:
-        datos = yf.download(ticker, period="1y", interval="1d", progress=False, auto_adjust=True)
+        datos = yf.download(ticker, period="1y", interval="1d", progress=False, auto_adjust=True, timeout=20)
         if datos.empty or len(datos) < 50:
             return None
 
@@ -368,23 +367,13 @@ def ejecutar_ciclo():
 def main():
     print("""
 ╔══════════════════════════════════════════════════════════╗
-║         MENTOR INVERSIONES — Monitor Activo             ║
-║   Revisando cada {intervalo} minutos · Ctrl+C para parar   ║
+║         MENTOR INVERSIONES — Ejecución única            ║
+║            (GitHub Actions — una vez y termina)         ║
 ╚══════════════════════════════════════════════════════════╝
-    """.format(intervalo=INTERVALO_MINUTOS))
-
-    while True:
-        try:
-            ejecutar_ciclo()
-            print(f"\n  💤 Esperando {INTERVALO_MINUTOS} minutos...\n")
-            time.sleep(INTERVALO_MINUTOS * 60)
-        except KeyboardInterrupt:
-            print("\n\n  👋 Monitor detenido. ¡Hasta pronto!")
-            break
-        except Exception as e:
-            print(f"\n  ⚠️ Error inesperado: {e}")
-            print(f"  🔄 Reintentando en 5 minutos...")
-            time.sleep(300)
+    """)
+    # Una sola ejecución — GitHub Actions se encarga de repetirla
+    ejecutar_ciclo()
+    print("\n  ✅ Ejecución completada.")
 
 
 if __name__ == "__main__":
