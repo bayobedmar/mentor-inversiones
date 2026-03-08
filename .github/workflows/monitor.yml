@@ -1,0 +1,19 @@
+name: Mentor Inversiones Monitor
+
+on:
+  schedule:
+    - cron: '0 8,12,16,19 * * 1-5'  # 8h, 12h, 16h y 19h de Lunes a Viernes
+  workflow_dispatch:  # permite ejecutarlo manualmente también
+
+jobs:
+  analizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Instalar dependencias
+        run: pip install yfinance pandas numpy
+      - name: Ejecutar monitor
+        run: python mentor_alertas.py
